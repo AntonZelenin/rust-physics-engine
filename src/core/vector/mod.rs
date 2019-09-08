@@ -2,7 +2,7 @@ use std::ops;
 
 type Real = f64;
 
-#[derive(Debug)]
+#[derive(Default, Debug, Copy, Clone)]
 pub struct Vec3 {
     x: Real,
     y: Real,
@@ -13,12 +13,7 @@ pub struct Vec3 {
 
 impl Vec3 {
     pub fn new() -> Self {
-        Vec3 {
-            x: 0.0,
-            y: 0.0,
-            z: 0.0,
-            pad: 0.0,
-        }
+        Vec3::default()
     }
 
     // is it overhead?
@@ -27,7 +22,7 @@ impl Vec3 {
             x: self.x,
             y: self.y,
             z: self.z,
-            pad: 0.0,
+            ..Default::default()
         }
     }
 
@@ -60,6 +55,54 @@ impl Vec3 {
         }
         self
     }
+
+    pub fn add_scaled(&mut self, v: &Vec3, scale: Real) -> &mut Self {
+        self.x += v.x * scale;
+        self.y += v.y * scale;
+        self.z += v.z * scale;
+        self
+    }
+
+    pub fn component_product(&self, v: &Vec3) -> Self {
+        Vec3 {
+            x: self.x * v.x,
+            y: self.y * v.y,
+            z: self.z * v.z,
+            ..Default::default()
+        }
+    }
+
+    pub fn component_product_update(&mut self, v: &Vec3) -> &mut Self {
+        self.x *= v.x;
+        self.y *= v.y;
+        self.z *= v.z;
+        self
+    }
+
+    pub fn scalar_product(&self, v: &Vec3) -> Real {
+        self.x * v.x + self.y * v.y + self.z * v.z
+    }
+
+    pub fn vector_product(&self, v: &Vec3) -> Self {
+        Vec3 {
+            x: self.y * v.z - self.z * v.y,
+            y: self.z * v.x - self.x * v.z,
+            z: self.x * v.y - self.y * v.x,
+            ..Default::default()
+        }
+    }
+
+    /// this algorithm is designed for right-handed system
+    pub fn make_orthogonal_basis(a: &mut Vec3, b: &mut Vec3, c: &mut Vec3) {
+        a.normalize();
+        *c = *a % *b;
+        if c.square_magnitude() == 0.0 {
+            // TODO: generate an error?
+            return;
+        }
+        c.normalize();
+        *b = *c % *a;
+    }
 }
 
 impl ops::MulAssign<Real> for Vec3 {
@@ -78,7 +121,73 @@ impl ops::Mul<Real> for Vec3 {
             x: self.x * v,
             y: self.y * v,
             z: self.z * v,
-            pad: 0.0,
+            ..Default::default()
         }
+    }
+}
+
+impl ops::AddAssign<Vec3> for Vec3 {
+    fn add_assign(&mut self, v: Vec3) {
+        self.x += v.x;
+        self.y += v.y;
+        self.z += v.z;
+    }
+}
+
+impl ops::Add<Vec3> for Vec3 {
+    type Output = Vec3;
+
+    fn add(self, v: Vec3) -> Self::Output {
+        Vec3 {
+            x: self.x + v.x,
+            y: self.y + v.y,
+            z: self.z + v.z,
+            ..Default::default()
+        }
+    }
+}
+
+impl ops::SubAssign<Vec3> for Vec3 {
+    fn sub_assign(&mut self, v: Vec3) {
+        self.x -= v.x;
+        self.y -= v.y;
+        self.z -= v.z;
+    }
+}
+
+impl ops::Sub<Vec3> for Vec3 {
+    type Output = Vec3;
+
+    fn sub(self, v: Vec3) -> Self::Output {
+        Vec3 {
+            x: self.x - v.x,
+            y: self.y - v.y,
+            z: self.z - v.z,
+            ..Default::default()
+        }
+    }
+}
+
+impl ops::Mul<Vec3> for Vec3 {
+    type Output = Real;
+
+    fn mul(self, v: Vec3) -> Self::Output {
+        self.x * v.x + self.y * v.y + self.z * v.z
+    }
+}
+
+impl ops::RemAssign<Vec3> for Vec3 {
+    fn rem_assign(&mut self, v: Vec3) {
+        self.x = self.y * v.z - self.z * v.y;
+        self.y = self.z * v.x - self.x * v.z;
+        self.z = self.x * v.y - self.y * v.x;
+    }
+}
+
+impl ops::Rem<Vec3> for Vec3 {
+    type Output = Vec3;
+
+    fn rem(self, v: Vec3) -> Self::Output {
+        self.vector_product(&v)
     }
 }
