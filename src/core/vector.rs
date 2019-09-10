@@ -1,6 +1,5 @@
+use crate::core::types::Real;
 use std::ops;
-
-type Real = f64;
 
 #[derive(Default, Debug, Copy, Clone)]
 pub struct Vec3 {
