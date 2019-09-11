@@ -102,6 +102,13 @@ impl Vec3 {
         c.normalize();
         *b = *c % *a;
     }
+
+    pub fn set_to_zero(&mut self) -> &mut Self {
+        self.x = 0.0;
+        self.y = 0.0;
+        self.z = 0.0;
+        self
+    }
 }
 
 impl ops::MulAssign<Real> for Vec3 {
