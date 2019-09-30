@@ -3,16 +3,25 @@ use std::ops;
 
 #[derive(Default, Debug, Copy, Clone)]
 pub struct Vec3 {
-    x: Real,
-    y: Real,
-    z: Real,
-    // four word alignment in emory, not sure if needed
+    pub x: Real,
+    pub y: Real,
+    pub z: Real,
+    // four word alignment in memory, not sure if it's needed
     pad: Real,
 }
 
 impl Vec3 {
     pub fn new() -> Self {
-        Vec3::default()
+        Self::default()
+    }
+
+    pub fn from_vec(vec: Vec<Real>) -> Vec3 {
+        Vec3 {
+            x: vec[0],
+            y: vec[1],
+            z: vec[2],
+            ..Vec3::default()
+        }
     }
 
     // is it overhead?
@@ -55,14 +64,14 @@ impl Vec3 {
         self
     }
 
-    pub fn add_scaled(&mut self, v: &Vec3, scale: Real) -> &mut Self {
+    pub fn add_scaled(&mut self, v: Vec3, scale: Real) -> &mut Self {
         self.x += v.x * scale;
         self.y += v.y * scale;
         self.z += v.z * scale;
         self
     }
 
-    pub fn component_product(&self, v: &Vec3) -> Self {
+    pub fn component_product(&self, v: Vec3) -> Self {
         Vec3 {
             x: self.x * v.x,
             y: self.y * v.y,
@@ -71,18 +80,18 @@ impl Vec3 {
         }
     }
 
-    pub fn component_product_update(&mut self, v: &Vec3) -> &mut Self {
+    pub fn component_product_update(&mut self, v: Vec3) -> &mut Self {
         self.x *= v.x;
         self.y *= v.y;
         self.z *= v.z;
         self
     }
 
-    pub fn scalar_product(&self, v: &Vec3) -> Real {
+    pub fn scalar_product(&self, v: Vec3) -> Real {
         self.x * v.x + self.y * v.y + self.z * v.z
     }
 
-    pub fn vector_product(&self, v: &Vec3) -> Self {
+    pub fn vector_product(&self, v: Vec3) -> Self {
         Vec3 {
             x: self.y * v.z - self.z * v.y,
             y: self.z * v.x - self.x * v.z,
@@ -120,6 +129,19 @@ impl ops::MulAssign<Real> for Vec3 {
 }
 
 impl ops::Mul<Real> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, v: Real) -> Self::Output {
+        Vec3 {
+            x: self.x * v,
+            y: self.y * v,
+            z: self.z * v,
+            ..Default::default()
+        }
+    }
+}
+
+impl ops::Mul<Real> for &mut Vec3 {
     type Output = Vec3;
 
     fn mul(self, v: Real) -> Self::Output {
@@ -194,6 +216,6 @@ impl ops::Rem<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn rem(self, v: Vec3) -> Self::Output {
-        self.vector_product(&v)
+        self.vector_product(v)
     }
 }

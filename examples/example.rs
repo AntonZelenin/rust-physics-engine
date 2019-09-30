@@ -1,8 +1,7 @@
-pub mod core;
-
-use crate::core::vector::Vec3;
-use crate::core::particle::Particle;
+use rust_physics_engine::core::vector::Vec3;
+use rust_physics_engine::core::particle::Particle;
 use rand::prelude::*;
+use rust_physics_engine::core::types::Real;
 
 fn main() {
     let mut particle = Particle::new();
@@ -15,7 +14,7 @@ fn main() {
     let mut frames_number = 0;
     while timer < 1.0 {
         frames_number += 1;
-        duration = 1.0 / rng.gen_range(60, 70) as f64;
+        duration = 1.0 / rng.gen_range(60, 70) as Real;
         timer += duration;
         particle.add_acceleration(gravitation);
         particle.integrate(duration);

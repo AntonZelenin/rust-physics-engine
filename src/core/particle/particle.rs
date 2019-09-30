@@ -1,5 +1,6 @@
 use crate::core::vector::Vec3;
 use crate::core::types::Real;
+use crate::core::particle::particle_trait::ParticleTrait;
 
 pub struct Particle {
     position: Vec3,
@@ -22,7 +23,7 @@ pub struct Particle {
 
 impl Particle {
     pub fn new() -> Self {
-        Particle {
+        Self {
             position: Vec3::new(),
             velocity: Vec3::new(),
             acceleration: Vec3::new(),
@@ -47,33 +48,11 @@ impl Particle {
         self
     }
 
-    /// Integrates the particle forward in time by the given amount.
-    /// This function uses a Newton-Euler integration method, which is a
-    /// linear approximation to the correct integral. For this reason it
-    /// mey be inaccurate in some cases
-    pub fn integrate(&mut self, duration: Real) -> &mut Self {
-        if duration <= 0.0 {
-            panic!("Time between frames cannot be <= 0");
-        }
-        if self.is_infinite_mass() {
-            return self;
-        }
-        self.position.add_scaled(&self.velocity, duration);
-        self.velocity.add_scaled(&self.acceleration, duration);
-        self.velocity *= self.damping.powf(duration);
-        self.clear_accumulator();
-        self
-    }
-
     pub fn get_kinetic_energy(&self) -> Real {
         if self.is_infinite_mass() {
             return 0.0;
         }
         (1.0 / 2.0) * (1.0 / self.inverse_mass) * self.velocity.square_magnitude()
-    }
-
-    fn is_infinite_mass(&self) -> bool {
-        self.inverse_mass == 0.0
     }
 
     pub fn get_velocity_magnitude(&self) -> Real {
@@ -85,7 +64,44 @@ impl Particle {
         self
     }
 
-    pub fn clear_accumulator(&mut self) -> &mut Self {
+    pub fn set_damping(&mut self, damping: Real) -> &mut Self {
+        self.damping = damping;
+        self
+    }
+}
+
+impl ParticleTrait for Particle {
+    fn is_infinite_mass(&self) -> bool {
+        self.inverse_mass == 0.0
+    }
+
+    fn get_position(&self) -> Vec3 {
+        self.position.clone()
+    }
+
+    fn set_position(&mut self, p: Vec3) -> &mut Self {
+        self.position = p;
+        self
+    }
+
+    fn get_velocity(&self) -> Vec3 {
+        self.velocity.clone()
+    }
+
+    fn set_velocity(&mut self, v: Vec3) -> &mut Self {
+        self.velocity = v;
+        self
+    }
+
+    fn get_acceleration(&self) -> Vec3 {
+        self.acceleration.clone()
+    }
+
+    fn get_damping(&self) -> Real {
+        self.damping
+    }
+
+    fn clear_accumulator(&mut self) -> &mut Self {
         self.acceleration.set_to_zero();
         self
     }
