@@ -1,6 +1,6 @@
-use crate::core::vector::Vec3;
-use crate::core::types::Real;
 use crate::core::particle::particle_trait::ParticleTrait;
+use crate::core::types::Real;
+use crate::core::vector::Vec3;
 
 pub struct Particle {
     position: Vec3,

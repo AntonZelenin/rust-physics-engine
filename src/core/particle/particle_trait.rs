@@ -1,5 +1,5 @@
-use crate::core::vector::Vec3;
 use crate::core::types::Real;
+use crate::core::vector::Vec3;
 
 pub trait ParticleTrait {
     /// Integrates the particle forward in time by the given amount.

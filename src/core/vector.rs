@@ -7,7 +7,7 @@ pub struct Vec3 {
     pub y: Real,
     pub z: Real,
     // four word alignment in memory, not sure if it's needed
-    pad: Real,
+    pub pad: Real,
 }
 
 impl Vec3 {
@@ -15,11 +15,11 @@ impl Vec3 {
         Self::default()
     }
 
-    pub fn from_vec(vec: Vec<Real>) -> Vec3 {
+    pub fn from_values(x: Real, y: Real, z: Real) -> Vec3 {
         Vec3 {
-            x: vec[0],
-            y: vec[1],
-            z: vec[2],
+            x,
+            y,
+            z,
             ..Vec3::default()
         }
     }
