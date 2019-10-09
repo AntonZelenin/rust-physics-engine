@@ -1,11 +1,11 @@
 use rand::prelude::*;
 use rust_physics_engine::core::types::Real;
 use rust_physics_engine::core::vector::Vec3;
-use rust_physics_engine::demos::app::App;
+use crate::firework::firework;
 
 fn main() {
-    let app = App::new();
-    app.run();
+//    let app = App::new();
+//    app.run();
     //    let mut particle = Particle::new();
     //
     //    let gravitation = Vec3::new().set_values(0.0, 9.8, 0.0).build();

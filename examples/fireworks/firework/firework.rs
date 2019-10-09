@@ -1,15 +1,17 @@
-use crate::core::particle::particle::Particle;
-use crate::core::particle::particle_trait::ParticleTrait;
-use crate::core::random;
-use crate::core::types::Real;
-use crate::core::vector::Vec3;
-use crate::core::GRAVITY;
-use crate::demos::app::App;
+use rust_physics_engine::core::particle::Particle;
+use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
+use rust_physics_engine::core::random;
+use rust_physics_engine::core::types::Real;
+use rust_physics_engine::core::vector::Vec3;
+use rust_physics_engine::core::GRAVITY;
+use rust_physics_engine::core::timing;
 use rand::Rng;
+use crate::app;
 
 pub struct FireworksDemo {
     title: String,
     max_fireworks: u32,
+    fireworks: Vec<Firework>,
     next_firework: u32,
     rule_count: u32,
     rules: Vec<FireworkRule>,
@@ -18,9 +20,11 @@ pub struct FireworksDemo {
 impl FireworksDemo {
     fn new() -> Self {
         let rule_count = 9;
+        let max_fireworks = 1024;
         FireworksDemo {
             title: "Cyclone > Fireworks demo".to_string(),
-            max_fireworks: 1024,
+            max_fireworks,
+            fireworks: Vec::with_capacity(max_fireworks as usize),
             next_firework: 0,
             rule_count,
             rules: Vec::with_capacity(rule_count as usize),
@@ -144,7 +148,47 @@ impl FireworksDemo {
 //        glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
     }
 
-    fn update() {}
+    fn create(&mut self, firework_type: i32, parent: &Firework) {
+        let rule: &FireworkRule = &self.rules[(firework_type - 1) as usize];
+        rule.create(&mut self.fireworks[self.next_firework as usize], Some(&parent));
+        self.next_firework = (self.next_firework + 1) % self.max_fireworks;
+    }
+
+    fn create_multiple(&mut self, firework_type: i32, number: u32, parent: &Firework) {
+        for _ in 0..number {
+            self.create(firework_type, parent);
+        }
+    }
+
+    fn update_firework(&mut self) {
+        let duration = timing::TIMING_DATA;
+        if duration <= 0.0 {
+            return;
+        }
+
+        for firework in self.fireworks.iter_mut() {
+            if firework.firework_type <= 0 {
+                continue;
+            }
+
+            firework.update(duration);
+            if !firework.is_alive() {
+                let rule = &self.rules[(firework.firework_type - 1) as usize];
+
+                // Delete the current firework (this doesn't affect its
+                // position and velocity for passing to the create function,
+                // just whether or not it is processed for rendering or
+                // physics.
+                firework.firework_type = 0;
+
+                for p in rule.payloads.iter() {
+                    self.create(p.firework_type, &firework);
+                }
+            }
+        }
+
+        self.update();
+    }
 
     fn display() {}
 }
@@ -271,7 +315,7 @@ impl ParticleTrait for Firework {
 }
 
 impl FireworkRule {
-    fn create(&self, mut firework: Firework, parent: Option<Firework>) {
+    fn create(&self, firework: &mut Firework, parent: Option<&Firework>) {
         firework.set_type(self.firework_type);
         firework.age = self.generate_age(self.min_age, self.max_age);
 

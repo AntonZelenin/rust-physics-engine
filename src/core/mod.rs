@@ -4,6 +4,7 @@ pub mod particle;
 pub mod random;
 pub mod types;
 pub mod vector;
+pub mod timing;
 
 pub const GRAVITY: Vec3 = Vec3 {
     x: 0.0,

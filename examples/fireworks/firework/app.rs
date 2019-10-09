@@ -8,7 +8,7 @@ pub trait App {
 
     fn init_graphics(&self) {}
 
-    fn update() {}
+    fn update(&self) {}
 
     fn display() {}
 
