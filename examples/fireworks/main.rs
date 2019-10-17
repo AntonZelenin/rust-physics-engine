@@ -1,10 +1,12 @@
-use rand::prelude::*;
-use rust_physics_engine::core::types::Real;
-use rust_physics_engine::core::vector::Vec3;
-use crate::firework::firework;
+pub mod fireworks_demo;
+pub mod app;
+
+//use rand::prelude::*;
+use crate::fireworks_demo::FireworksDemo;
 
 fn main() {
-//    let app = App::new();
+    let mut demo = FireworksDemo::new();
+    demo.init_rules();
 //    app.run();
     //    let mut particle = Particle::new();
     //

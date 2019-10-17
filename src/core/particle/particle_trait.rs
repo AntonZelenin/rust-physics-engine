@@ -2,7 +2,7 @@ use crate::core::types::Real;
 use crate::core::vector::Vec3;
 
 pub trait ParticleTrait {
-    /// Integrates the particle forward in time by the given amount.
+    /// Integrates the particle forward in time by the given amount (in seconds?).
     /// This function uses a Newton-Euler integration method, which is a
     /// linear approximation to the correct integral. For this reason it
     /// mey be inaccurate in some cases
@@ -10,7 +10,7 @@ pub trait ParticleTrait {
         if duration < 0.0 {
             panic!("Time between frames cannot be less then 0");
         }
-        if self.is_infinite_mass() || duration == 0.0 {
+        if self.is_infinite_mass() || duration <= 0.0 {
             return self;
         }
 
