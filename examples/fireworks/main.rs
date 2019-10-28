@@ -3,11 +3,12 @@ pub mod app;
 
 //use rand::prelude::*;
 use crate::fireworks_demo::FireworksDemo;
+use crate::app::App;
 
 fn main() {
     let mut demo = FireworksDemo::new();
     demo.init_rules();
-//    app.run();
+    demo.run();
     //    let mut particle = Particle::new();
     //
     //    let gravitation = Vec3::new().set_values(0.0, 9.8, 0.0).build();

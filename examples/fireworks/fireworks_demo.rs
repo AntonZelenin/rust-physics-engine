@@ -10,6 +10,7 @@ use rust_physics_engine::core::vector::Vec3;
 use rust_physics_engine::core::timing::TimingData;
 use rust_physics_engine::core::types::Real;
 
+#[derive(Clone)]
 pub struct FireworksDemo {
     title: String,
     max_fireworks: u32,
@@ -35,7 +36,7 @@ impl FireworksDemo {
 
     pub fn init_rules(&mut self) {
         let payloads = vec![Payload::new(3, 5), Payload::new(5, 5)];
-        self.rules[0] = FireworkRule::new(
+        self.rules.push(FireworkRule::new(
             1,
             0.5,
             1.4,
@@ -44,10 +45,10 @@ impl FireworksDemo {
             0.1,
             2,
             payloads,
-        );
+        ));
 
         let payloads = vec![Payload::new(4, 2)];
-        self.rules[1] = FireworkRule::new(
+        self.rules.push(FireworkRule::new(
             2,
             0.5,
             1.0,
@@ -56,10 +57,10 @@ impl FireworksDemo {
             0.8,
             1,
             payloads,
-        );
+        ));
 
         let payloads = vec![];
-        self.rules[2] = FireworkRule::new(
+        self.rules.push(FireworkRule::new(
             3,
             0.5,
             1.5,
@@ -68,10 +69,10 @@ impl FireworksDemo {
             0.8,
             0,
             payloads,
-        );
+        ));
 
         let payloads = vec![];
-        self.rules[3] = FireworkRule::new(
+        self.rules.push(FireworkRule::new(
             4,
             0.25,
             0.5,
@@ -80,10 +81,10 @@ impl FireworksDemo {
             0.2,
             0,
             payloads,
-        );
+        ));
 
         let payloads = vec![Payload::new(3, 5)];
-        self.rules[4] = FireworkRule::new(
+        self.rules.push(FireworkRule::new(
             5,
             0.5,
             1.0,
@@ -92,10 +93,10 @@ impl FireworksDemo {
             0.01,
             1,
             payloads,
-        );
+        ));
 
         let payloads = vec![];
-        self.rules[5] = FireworkRule::new(
+        self.rules.push(FireworkRule::new(
             6,
             3.0,
             5.0,
@@ -104,10 +105,10 @@ impl FireworksDemo {
             0.95,
             0,
             payloads,
-        );
+        ));
 
         let payloads = vec![Payload::new(8, 10)];
-        self.rules[6] = FireworkRule::new(
+        self.rules.push(FireworkRule::new(
             7,
             4.0,
             5.0,
@@ -116,10 +117,10 @@ impl FireworksDemo {
             0.01,
             1,
             payloads,
-        );
+        ));
 
         let payloads = vec![];
-        self.rules[7] = FireworkRule::new(
+        self.rules.push(FireworkRule::new(
             8,
             0.25,
             0.5,
@@ -128,10 +129,10 @@ impl FireworksDemo {
             0.01,
             0,
             payloads,
-        );
+        ));
 
         let payloads = vec![];
-        self.rules[8] = FireworkRule::new(
+        self.rules.push(FireworkRule::new(
             9,
             3.0,
             5.0,
@@ -140,7 +141,7 @@ impl FireworksDemo {
             0.95,
             0,
             payloads,
-        );
+        ));
     }
 
 //    fn init_fireworks_graphics(&self) {
@@ -150,43 +151,42 @@ impl FireworksDemo {
 //        glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 //    }
 
-    fn create(&mut self, firework_type: i32, parent: &Firework) {
-        let rule: &FireworkRule = &self.rules[(firework_type - 1) as usize];
-        rule.create(&mut self.fireworks[self.next_firework as usize], Some(&parent));
-        self.next_firework = (self.next_firework + 1) % self.max_fireworks;
-    }
-
-    fn create_multiple(&mut self, firework_type: i32, number: u32, parent: &Firework) {
-        for _ in 0..number {
-            self.create(firework_type, parent);
-        }
-    }
+//    fn create_multiple(&mut self, firework_type: i32, number: u32, parent: &Firework) {
+//        for _ in 0..number {
+//            self.create(firework_type, parent);
+//        }
+//    }
 
     fn display() {}
 
     fn update_fireworks(&mut self, duration: Real) {
-        self.fireworks.iter_mut()
-            .filter(|f| f.firework_type != 0)
-            .map(|f| f.update(duration));
+        for f in &mut self.fireworks {
+            f.update(duration);
+        }
+//        self.fireworks
+//            .iter_mut()
+//            .for_each(|f| f.update(duration));
     }
 
-    fn process_dead_fireworks(&mut self) {
-        self.fireworks
-            .iter_mut()
-            .filter(|f| !f.is_alive())
-            .map(|f| {
-                let rule = self.rules[(f.firework_type - 1) as usize].clone();
-
-                // Delete the current firework (this doesn't affect its
-                // position and velocity for passing to the create function,
-                // just whether or not it is processed for rendering or
-                // physics.
-                f.set_type(0);
-
-                for p in rule.payloads.iter() {
-                    self.create(p.firework_type, &f);
+    fn create_child_fireworks(&mut self) -> Vec<Firework> {
+        let mut child_fireworks: Vec<Firework> = Vec::new();
+        for firework in &mut self.fireworks {
+            if !firework.is_alive() {
+                let rule = &self.rules[(firework.firework_type - 1) as usize];
+                for payload in rule.payloads.iter() {
+                    child_fireworks.push(rule.create(Some(&firework)));
                 }
-            });
+            }
+        }
+        child_fireworks
+    }
+
+    fn remove_dead_fireworks(&mut self) {
+        self.fireworks.retain(|x| x.is_alive());
+    }
+
+    fn get_rule_by_type(&self, firework_type: i32) -> &FireworkRule {
+        &self.rules[(firework_type - 1) as usize]
     }
 }
 
@@ -197,28 +197,9 @@ impl App for FireworksDemo {
             return;
         }
         self.update_fireworks(duration);
-        self.process_dead_fireworks();
-
-//        for firework in self.fireworks.iter_mut() {
-//            if firework.firework_type <= 0 {
-//                continue;
-//            }
-//
-//            firework.update(duration);
-//            if !firework.is_alive() {
-//                let rule = &self.rules[(firework.firework_type - 1) as usize];
-//
-//                 Delete the current firework (this doesn't affect its
-//                 position and velocity for passing to the create function,
-//                 just whether or not it is processed for rendering or
-//                 physics.
-//                firework.firework_type = 0;
-//
-//                for p in rule.payloads.iter() {
-//                    self.create(p.firework_type, &firework);
-//                }
-//            }
-//        }
+        let mut child_fireworks = self.create_child_fireworks();
+        self.fireworks.append(&mut child_fireworks);
+        self.remove_dead_fireworks();
     }
 
     fn get_title(&self) -> String {

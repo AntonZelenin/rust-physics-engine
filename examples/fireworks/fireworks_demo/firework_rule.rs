@@ -42,7 +42,8 @@ impl FireworkRule {
         }
     }
 
-    pub(crate) fn create(&self, firework: &mut Firework, parent: Option<&Firework>) {
+    pub(crate) fn create(&self, parent: Option<&Firework>) -> Firework {
+        let mut firework = Firework::new();
         firework.set_type(self.firework_type);
         firework.age = self.generate_age(self.min_age, self.max_age);
 
@@ -55,7 +56,7 @@ impl FireworkRule {
             None => {
                 let mut start = Vec3::new();
                 let mut rng = rand::thread_rng();
-                // form -1 to 2 inclusively? high bound is exclusive
+                // form -1 to 2 inclusively, high bound is exclusive
                 let x = rng.gen_range(-1.0, 3.0);
                 start.x = 5.0 * x;
                 firework.set_position(start);
@@ -67,6 +68,7 @@ impl FireworkRule {
         firework.set_damping(self.damping);
         firework.add_acceleration(GRAVITY);
         firework.clear_accumulator();
+        firework
     }
 
     fn generate_age(&self, min: Real, max: Real) -> Real {

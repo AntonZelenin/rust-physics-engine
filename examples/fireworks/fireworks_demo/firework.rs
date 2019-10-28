@@ -3,6 +3,7 @@ use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
 use rust_physics_engine::core::types::Real;
 use rust_physics_engine::core::vector::Vec3;
 
+#[derive(Copy, Clone)]
 pub(crate) struct Firework {
     particle: Particle,
     pub(crate) firework_type: i32,
@@ -10,6 +11,14 @@ pub(crate) struct Firework {
 }
 
 impl Firework {
+
+    pub(crate) fn new() -> Self {
+        Self {
+            particle: Particle::new(),
+            firework_type: 0,
+            age: 0.0,
+        }
+    }
 
     /// duration in seconds?
     pub(crate) fn update(&mut self, duration: Real) -> &mut Self {
