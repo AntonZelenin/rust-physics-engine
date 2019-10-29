@@ -9,6 +9,7 @@ use crate::fireworks_demo::firework_rule::FireworkRule;
 use rust_physics_engine::core::vector::Vec3;
 use rust_physics_engine::core::timing::TimingData;
 use rust_physics_engine::core::types::Real;
+use kiss3d::window::Window;
 
 #[derive(Clone)]
 pub struct FireworksDemo {
@@ -34,7 +35,7 @@ impl FireworksDemo {
         }
     }
 
-    pub fn init_rules(&mut self) {
+    pub fn init_rules(&mut self) -> &mut Self {
         let payloads = vec![Payload::new(3, 5), Payload::new(5, 5)];
         self.rules.push(FireworkRule::new(
             1,
@@ -142,14 +143,14 @@ impl FireworksDemo {
             0,
             payloads,
         ));
+        self
     }
 
-//    fn init_fireworks_graphics(&self) {
-//        self.init_graphics();
-//
-//         TODO implement override the clear color
-//        glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
-//    }
+    pub fn init_firework(&mut self) -> &mut Self {
+        let firework = self.rules[0].create(None);
+        self.fireworks.push(firework);
+        self
+    }
 
 //    fn create_multiple(&mut self, firework_type: i32, number: u32, parent: &Firework) {
 //        for _ in 0..number {
@@ -157,15 +158,10 @@ impl FireworksDemo {
 //        }
 //    }
 
-    fn display() {}
-
     fn update_fireworks(&mut self, duration: Real) {
-        for f in &mut self.fireworks {
-            f.update(duration);
-        }
-//        self.fireworks
-//            .iter_mut()
-//            .for_each(|f| f.update(duration));
+        self.fireworks
+            .iter_mut()
+            .for_each(|f| { f.update(duration); });
     }
 
     fn create_child_fireworks(&mut self) -> Vec<Firework> {
@@ -200,6 +196,10 @@ impl App for FireworksDemo {
         let mut child_fireworks = self.create_child_fireworks();
         self.fireworks.append(&mut child_fireworks);
         self.remove_dead_fireworks();
+    }
+
+    fn display(&self, window: &mut Window) {
+
     }
 
     fn get_title(&self) -> String {

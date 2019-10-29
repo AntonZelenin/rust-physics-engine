@@ -8,16 +8,11 @@ pub trait App {
         while window.render() {
             timing.update();
             self.update(&timing);
+            self.display(&mut window);
         }
     }
 
-//    fn init_graphics(&self) {}
-
     fn update(&mut self, timing: &TimingData);
-
-//    fn display() {}
-
-//    fn key(&self, key: char) {}
-
+    fn display(&self, window: &mut Window);
     fn get_title(&self) -> String;
 }

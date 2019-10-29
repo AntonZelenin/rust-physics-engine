@@ -7,8 +7,10 @@ use crate::app::App;
 
 fn main() {
     let mut demo = FireworksDemo::new();
-    demo.init_rules();
-    demo.run();
+    demo
+        .init_rules()
+        .init_firework()
+        .run();
     //    let mut particle = Particle::new();
     //
     //    let gravitation = Vec3::new().set_values(0.0, 9.8, 0.0).build();
