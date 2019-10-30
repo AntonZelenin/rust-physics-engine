@@ -1,5 +1,5 @@
-use rust_physics_engine::core::particle::Particle;
 use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
+use rust_physics_engine::core::particle::Particle;
 use rust_physics_engine::core::types::Real;
 use rust_physics_engine::core::vector::Vec3;
 
@@ -11,7 +11,6 @@ pub(crate) struct Firework {
 }
 
 impl Firework {
-
     pub(crate) fn new() -> Self {
         Self {
             particle: Particle::new(),

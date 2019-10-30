@@ -154,7 +154,7 @@ impl ops::Mul<Real> for &mut Vec3 {
     }
 }
 
-impl ops::AddAssign<Vec3> for Vec3 {
+impl ops::AddAssign for Vec3 {
     fn add_assign(&mut self, v: Vec3) {
         self.x += v.x;
         self.y += v.y;
@@ -162,7 +162,7 @@ impl ops::AddAssign<Vec3> for Vec3 {
     }
 }
 
-impl ops::Add<Vec3> for Vec3 {
+impl ops::Add for Vec3 {
     type Output = Vec3;
 
     fn add(self, v: Vec3) -> Self::Output {
@@ -175,7 +175,7 @@ impl ops::Add<Vec3> for Vec3 {
     }
 }
 
-impl ops::SubAssign<Vec3> for Vec3 {
+impl ops::SubAssign for Vec3 {
     fn sub_assign(&mut self, v: Vec3) {
         self.x -= v.x;
         self.y -= v.y;
@@ -183,7 +183,7 @@ impl ops::SubAssign<Vec3> for Vec3 {
     }
 }
 
-impl ops::Sub<Vec3> for Vec3 {
+impl ops::Sub for Vec3 {
     type Output = Vec3;
 
     fn sub(self, v: Vec3) -> Self::Output {
@@ -196,7 +196,7 @@ impl ops::Sub<Vec3> for Vec3 {
     }
 }
 
-impl ops::Mul<Vec3> for Vec3 {
+impl ops::Mul for Vec3 {
     type Output = Real;
 
     fn mul(self, v: Vec3) -> Self::Output {
@@ -204,7 +204,7 @@ impl ops::Mul<Vec3> for Vec3 {
     }
 }
 
-impl ops::RemAssign<Vec3> for Vec3 {
+impl ops::RemAssign for Vec3 {
     fn rem_assign(&mut self, v: Vec3) {
         self.x = self.y * v.z - self.z * v.y;
         self.y = self.z * v.x - self.x * v.z;
@@ -212,7 +212,7 @@ impl ops::RemAssign<Vec3> for Vec3 {
     }
 }
 
-impl ops::Rem<Vec3> for Vec3 {
+impl ops::Rem for Vec3 {
     type Output = Vec3;
 
     fn rem(self, v: Vec3) -> Self::Output {

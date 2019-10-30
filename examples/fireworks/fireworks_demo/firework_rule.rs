@@ -1,11 +1,11 @@
-use rust_physics_engine::core::types::Real;
-use rust_physics_engine::core::vector::Vec3;
-use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
-use rust_physics_engine::core::random;
-use rust_physics_engine::core::GRAVITY;
 use crate::fireworks_demo::firework::Firework;
 use crate::fireworks_demo::payload::Payload;
 use rand::prelude::*;
+use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
+use rust_physics_engine::core::random;
+use rust_physics_engine::core::types::Real;
+use rust_physics_engine::core::vector::Vec3;
+use rust_physics_engine::core::GRAVITY;
 
 #[derive(Clone)]
 pub(crate) struct FireworkRule {

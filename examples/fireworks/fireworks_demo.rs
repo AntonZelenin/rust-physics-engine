@@ -4,12 +4,12 @@ mod payload;
 
 use crate::app::App;
 use crate::fireworks_demo::firework::Firework;
-use crate::fireworks_demo::payload::Payload;
 use crate::fireworks_demo::firework_rule::FireworkRule;
-use rust_physics_engine::core::vector::Vec3;
+use crate::fireworks_demo::payload::Payload;
+use kiss3d::window::Window;
 use rust_physics_engine::core::timing::TimingData;
 use rust_physics_engine::core::types::Real;
-use kiss3d::window::Window;
+use rust_physics_engine::core::vector::Vec3;
 
 #[derive(Clone)]
 pub struct FireworksDemo {
@@ -152,16 +152,16 @@ impl FireworksDemo {
         self
     }
 
-//    fn create_multiple(&mut self, firework_type: i32, number: u32, parent: &Firework) {
-//        for _ in 0..number {
-//            self.create(firework_type, parent);
-//        }
-//    }
+    //    fn create_multiple(&mut self, firework_type: i32, number: u32, parent: &Firework) {
+    //        for _ in 0..number {
+    //            self.create(firework_type, parent);
+    //        }
+    //    }
 
     fn update_fireworks(&mut self, duration: Real) {
-        self.fireworks
-            .iter_mut()
-            .for_each(|f| { f.update(duration); });
+        self.fireworks.iter_mut().for_each(|f| {
+            f.update(duration);
+        });
     }
 
     fn create_child_fireworks(&mut self) -> Vec<Firework> {
@@ -198,9 +198,7 @@ impl App for FireworksDemo {
         self.remove_dead_fireworks();
     }
 
-    fn display(&self, window: &mut Window) {
-
-    }
+    fn display(&self, window: &mut Window) {}
 
     fn get_title(&self) -> String {
         self.title.clone()

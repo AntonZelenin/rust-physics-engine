@@ -10,7 +10,7 @@ pub trait ParticleTrait {
         if duration < 0.0 {
             panic!("Time between frames cannot be less then 0");
         }
-        if self.is_infinite_mass() || duration <= 0.0 {
+        if self.is_infinite_mass() || duration == 0.0 {
             return self;
         }
 
