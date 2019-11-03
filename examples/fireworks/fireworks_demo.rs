@@ -6,32 +6,29 @@ use crate::app::App;
 use crate::fireworks_demo::firework::Firework;
 use crate::fireworks_demo::firework_rule::FireworkRule;
 use crate::fireworks_demo::payload::Payload;
+use kiss3d::light::Light;
 use kiss3d::window::Window;
+use nalgebra::{Point3, Translation3, Vector3};
+use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
 use rust_physics_engine::core::timing::TimingData;
 use rust_physics_engine::core::types::Real;
 use rust_physics_engine::core::vector::Vec3;
+use std::borrow::BorrowMut;
 
-#[derive(Clone)]
 pub struct FireworksDemo {
-    title: String,
-    max_fireworks: u32,
     fireworks: Vec<Firework>,
-    next_firework: u32,
-    rule_count: u32,
     rules: Vec<FireworkRule>,
+    window: Window,
 }
 
 impl FireworksDemo {
     pub fn new() -> Self {
-        let rule_count = 9;
-        let max_fireworks = 1024;
+        let mut window = Window::new("Cyclone > Fireworks demo");
+        window.set_light(Light::Absolute(Point3::new(0.0, 0.0, -10.0)));
         FireworksDemo {
-            title: "Cyclone > Fireworks demo".to_string(),
-            max_fireworks,
-            fireworks: Vec::with_capacity(max_fireworks as usize),
-            next_firework: 0,
-            rule_count,
-            rules: Vec::with_capacity(rule_count as usize),
+            fireworks: Vec::with_capacity(1024),
+            rules: Vec::with_capacity(9),
+            window,
         }
     }
 
@@ -147,7 +144,15 @@ impl FireworksDemo {
     }
 
     pub fn init_firework(&mut self) -> &mut Self {
-        let firework = self.rules[0].create(None);
+        let mut firework = self.rules[0].create(None);
+        firework.set_position(Vec3::from_values(0.0, -70.0, 200.0));
+        let mut sphere = self.window.add_sphere(1.0);
+        sphere.append_translation(&Translation3::from(Vector3::new(
+            firework.get_position().x,
+            firework.get_position().y,
+            firework.get_position().z,
+        )));
+        firework.scene_node = Some(sphere);
         self.fireworks.push(firework);
         self
     }
@@ -198,9 +203,7 @@ impl App for FireworksDemo {
         self.remove_dead_fireworks();
     }
 
-    fn display(&self, window: &mut Window) {}
-
-    fn get_title(&self) -> String {
-        self.title.clone()
+    fn get_window(&mut self) -> &mut Window {
+        &mut self.window
     }
 }

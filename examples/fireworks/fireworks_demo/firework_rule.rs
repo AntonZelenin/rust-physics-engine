@@ -67,7 +67,7 @@ impl FireworkRule {
         firework.set_mass(1.0);
         firework.set_damping(self.damping);
         firework.add_acceleration(GRAVITY);
-        firework.clear_accumulator();
+//        firework.clear_accumulator();
         firework
     }
 

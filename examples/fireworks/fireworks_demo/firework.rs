@@ -1,13 +1,17 @@
+use kiss3d::scene::SceneNode;
+use nalgebra::{Translation3, Vector3};
 use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
 use rust_physics_engine::core::particle::Particle;
 use rust_physics_engine::core::types::Real;
 use rust_physics_engine::core::vector::Vec3;
+use std::borrow::BorrowMut;
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub(crate) struct Firework {
     particle: Particle,
     pub(crate) firework_type: i32,
     pub(crate) age: Real,
+    pub(crate) scene_node: Option<SceneNode>,
 }
 
 impl Firework {
@@ -16,18 +20,26 @@ impl Firework {
             particle: Particle::new(),
             firework_type: 0,
             age: 0.0,
+            scene_node: None,
         }
     }
 
     /// duration in seconds?
     pub(crate) fn update(&mut self, duration: Real) -> &mut Self {
         self.integrate(duration);
+        let position = self.get_position();
+        if let Some(node) = &mut self.scene_node {
+            node.append_translation(&Translation3::from(Vector3::new(
+                position.x, position.y, position.z,
+            )));
+        };
         self.age -= duration;
         self
     }
 
     pub(crate) fn is_alive(&self) -> bool {
-        self.age > 0.0 || self.particle.get_position().y > 0.0
+        let p = self.particle.get_position();
+        self.age > 0.0 && self.particle.get_position().y > -70.0
     }
 
     pub(crate) fn set_type(&mut self, firework_type: i32) -> &mut Self {

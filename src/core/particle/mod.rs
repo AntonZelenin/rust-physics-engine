@@ -37,7 +37,7 @@ impl Particle {
 
     pub fn set_mass(&mut self, mass: Real) -> &mut Self {
         if mass <= 0.0 {
-            panic!("Mass cannot be less or greater then 0");
+            panic!("Mass should be greater then 0");
         }
         self.inverse_mass = 1.0 / mass;
         self

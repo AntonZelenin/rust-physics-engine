@@ -1,13 +1,14 @@
 pub mod app;
 pub mod fireworks_demo;
 
-//use rand::prelude::*;
 use crate::app::App;
 use crate::fireworks_demo::FireworksDemo;
+use kiss3d::window::Window;
 
 fn main() {
     let mut demo = FireworksDemo::new();
     demo.init_rules().init_firework().run();
+
     //    let mut particle = Particle::new();
     //
     //    let gravitation = Vec3::new().set_values(0.0, 9.8, 0.0).build();
