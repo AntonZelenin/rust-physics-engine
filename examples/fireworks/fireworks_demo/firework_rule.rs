@@ -9,7 +9,7 @@ use rust_physics_engine::core::GRAVITY;
 
 #[derive(Clone)]
 pub(crate) struct FireworkRule {
-    firework_type: i32,
+    pub(crate) firework_type: i32,
     min_age: Real,
     max_age: Real,
     min_velocity: Vec3,
@@ -42,9 +42,9 @@ impl FireworkRule {
         }
     }
 
-    pub(crate) fn create(&self, parent: Option<&Firework>) -> Firework {
+    pub(crate) fn create(&self, firework_type: i32, parent: Option<&Firework>) -> Firework {
         let mut firework = Firework::new();
-        firework.set_type(self.firework_type);
+        firework.set_type(firework_type);
         firework.age = self.generate_age(self.min_age, self.max_age);
 
         let mut velocity = Vec3::new();

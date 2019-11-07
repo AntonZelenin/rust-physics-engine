@@ -1,7 +1,7 @@
 #[derive(Clone)]
 pub(crate) struct Payload {
     pub(crate) firework_type: i32,
-    count: u32,
+    pub(crate) count: u32,
 }
 
 impl Payload {

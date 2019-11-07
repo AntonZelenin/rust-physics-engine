@@ -144,17 +144,18 @@ impl FireworksDemo {
     }
 
     pub fn init_firework(&mut self) -> &mut Self {
-        let mut firework = self.rules[0].create(None);
-        firework.set_position(Vec3::from_values(0.0, -50.0, 200.0));
+        let rule = &self.rules[0];
+        let mut firework = rule.create(rule.firework_type, None);
+        firework.set_position(Vec3::from_values(0.0, -10.0, 30.0));
         self.fireworks.push(firework);
         self
     }
 
-    //    fn create_multiple(&mut self, firework_type: i32, number: u32, parent: &Firework) {
-    //        for _ in 0..number {
-    //            self.create(firework_type, parent);
-    //        }
-    //    }
+//        fn create_multiple(&mut self, firework_type: i32, number: u32, parent: &Firework) {
+//            for _ in 0..number {
+//                self.create(firework_type, parent);
+//            }
+//        }
 
     fn update_fireworks(&mut self, duration: Real) {
         self.fireworks.iter_mut().for_each(|f| {
@@ -168,7 +169,9 @@ impl FireworksDemo {
             if !firework.is_alive() {
                 let rule = &self.rules[(firework.firework_type - 1) as usize];
                 for payload in rule.payloads.iter() {
-                    child_fireworks.push(rule.create(Some(&firework)));
+                    for i in 0..payload.count {
+                        child_fireworks.push(rule.create(payload.firework_type, Some(&firework)));
+                    }
                 }
             }
         }

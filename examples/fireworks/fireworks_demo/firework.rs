@@ -54,8 +54,12 @@ impl Firework {
     }
 
     pub fn get_color(&self) -> Point3<Real> {
-        // TODO implement appropriate colours
-        Point3::new(1.0, 0.0, 0.0)
+        match self.firework_type {
+            1 => Point3::new(1.0, 0.0, 0.0),
+            3 => Point3::new(1.0, 1.0, 0.0),
+            5 => Point3::new(0.0, 0.0, 1.0),
+            _ => Point3::new(1.0, 0.0, 0.0),
+        }
     }
 }
 
