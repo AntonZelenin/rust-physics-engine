@@ -23,7 +23,7 @@ pub struct FireworksDemo {
 
 impl FireworksDemo {
     pub fn new() -> Self {
-        let mut window = Window::new("Cyclone > Fireworks demo");
+        let mut window = Window::new_with_size("Cyclone > Fireworks demo", 1024, 1024);
         window.set_light(Light::Absolute(Point3::new(0.0, 0.0, -10.0)));
         FireworksDemo {
             fireworks: Vec::with_capacity(1024),
@@ -145,14 +145,7 @@ impl FireworksDemo {
 
     pub fn init_firework(&mut self) -> &mut Self {
         let mut firework = self.rules[0].create(None);
-        firework.set_position(Vec3::from_values(0.0, -70.0, 200.0));
-        let mut sphere = self.window.add_sphere(1.0);
-        sphere.append_translation(&Translation3::from(Vector3::new(
-            firework.get_position().x,
-            firework.get_position().y,
-            firework.get_position().z,
-        )));
-        firework.scene_node = Some(sphere);
+        firework.set_position(Vec3::from_values(0.0, -50.0, 200.0));
         self.fireworks.push(firework);
         self
     }
@@ -192,6 +185,10 @@ impl FireworksDemo {
 }
 
 impl App for FireworksDemo {
+    fn init(&mut self) {
+        self.window.set_point_size(10.0);
+    }
+
     fn update(&mut self, timing: &TimingData) {
         let duration = timing.get_last_frame_duration().as_secs_f64() as Real;
         if duration <= 0.0 {
@@ -205,5 +202,13 @@ impl App for FireworksDemo {
 
     fn get_window(&mut self) -> &mut Window {
         &mut self.window
+    }
+
+    fn display(&mut self) {
+        for firework in &self.fireworks {
+            // TODO refactor, I'm lazy now, so making it fast and dirty
+            let p = firework.get_position();
+            self.window.draw_point(&Point3::new(p.x, p.y, p.z), &firework.get_color())
+        }
     }
 }

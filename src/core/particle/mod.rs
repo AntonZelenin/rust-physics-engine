@@ -22,6 +22,7 @@ pub struct Particle {
     /// infinity) and we can represent objects with infinite mass saying inverse mass = 0
     /// this can be used for immovable objects like walls or floor
     inverse_mass: Real,
+    force_accum: Vec3,
 }
 
 impl Particle {
@@ -32,6 +33,7 @@ impl Particle {
             acceleration: Vec3::new(),
             damping: 0.999,
             inverse_mass: 1.0,
+            force_accum: Vec3::new(),
         }
     }
 
@@ -78,6 +80,10 @@ impl ParticleTrait for Particle {
         self.inverse_mass == 0.0
     }
 
+    fn get_inverse_mass(&self) -> Real {
+        self.inverse_mass
+    }
+
     fn get_position(&self) -> Vec3 {
         self.position.clone()
     }
@@ -105,7 +111,16 @@ impl ParticleTrait for Particle {
     }
 
     fn clear_accumulator(&mut self) -> &mut Self {
-        self.acceleration.set_to_zero();
+        self.force_accum.set_to_zero();
         self
+    }
+
+    fn add_force(&mut self, f: Vec3) -> &mut Self {
+        self.force_accum += f;
+        self
+    }
+
+    fn get_force_accum(&self) -> &Vec3 {
+        &self.force_accum
     }
 }

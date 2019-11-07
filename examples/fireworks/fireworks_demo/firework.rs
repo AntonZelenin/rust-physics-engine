@@ -1,5 +1,4 @@
-use kiss3d::scene::SceneNode;
-use nalgebra::{Translation3, Vector3};
+use nalgebra::{Translation3, Vector3, Point3};
 use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
 use rust_physics_engine::core::particle::Particle;
 use rust_physics_engine::core::types::Real;
@@ -11,7 +10,6 @@ pub(crate) struct Firework {
     particle: Particle,
     pub(crate) firework_type: i32,
     pub(crate) age: Real,
-    pub(crate) scene_node: Option<SceneNode>,
 }
 
 impl Firework {
@@ -20,20 +18,13 @@ impl Firework {
             particle: Particle::new(),
             firework_type: 0,
             age: 0.0,
-            scene_node: None,
         }
     }
 
-    /// duration in seconds?
-    pub(crate) fn update(&mut self, duration: Real) -> &mut Self {
-        self.integrate(duration);
+    pub(crate) fn update(&mut self, duration_in_seconds: Real) -> &mut Self {
+        self.integrate(duration_in_seconds);
         let position = self.get_position();
-        if let Some(node) = &mut self.scene_node {
-            node.append_translation(&Translation3::from(Vector3::new(
-                position.x, position.y, position.z,
-            )));
-        };
-        self.age -= duration;
+        self.age -= duration_in_seconds;
         self
     }
 
@@ -61,11 +52,20 @@ impl Firework {
         self.particle.add_acceleration(acceleration);
         self
     }
+
+    pub fn get_color(&self) -> Point3<Real> {
+        // TODO implement appropriate colours
+        Point3::new(1.0, 0.0, 0.0)
+    }
 }
 
 impl ParticleTrait for Firework {
     fn is_infinite_mass(&self) -> bool {
         self.particle.is_infinite_mass()
+    }
+
+    fn get_inverse_mass(&self) -> Real {
+        self.particle.get_inverse_mass()
     }
 
     fn get_position(&self) -> Vec3 {
@@ -97,5 +97,14 @@ impl ParticleTrait for Firework {
     fn clear_accumulator(&mut self) -> &mut Self {
         self.particle.clear_accumulator();
         self
+    }
+
+    fn add_force(&mut self, f: Vec3) -> &mut Self {
+        self.particle.add_force(f);
+        self
+    }
+
+    fn get_force_accum(&self) -> &Vec3 {
+        self.particle.get_force_accum()
     }
 }
