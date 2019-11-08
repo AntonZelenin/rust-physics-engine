@@ -1,5 +1,6 @@
 use crate::core::types::Real;
 use crate::core::vector::Vec3;
+use std::f64::INFINITY;
 
 pub trait ParticleTrait {
     /// Integrates the particle forward in time by the given amount (in seconds?).
@@ -18,10 +19,10 @@ pub trait ParticleTrait {
         next_position.add_scaled(self.get_velocity(), duration);
         self.set_position(next_position);
 
-//        println!("{:?}", self.get_position());
+        //        println!("{:?}", self.get_position());
 
         let mut resulting_acceleration = self.get_acceleration();
-        resulting_acceleration.add_scaled(self.get_force_accum().clone(), self.get_inverse_mass());
+        resulting_acceleration.add_scaled(self.get_force_accum(), self.get_inverse_mass());
 
         let mut next_velocity = self.get_velocity();
         next_velocity.add_scaled(resulting_acceleration, duration);
@@ -30,6 +31,13 @@ pub trait ParticleTrait {
 
         self.clear_accumulator();
         self
+    }
+
+    fn get_mass(&self) -> Real {
+        if self.get_inverse_mass() == 0.0 {
+            return INFINITY as Real;
+        }
+        1.0 / self.get_inverse_mass()
     }
 
     fn is_infinite_mass(&self) -> bool;
@@ -43,5 +51,5 @@ pub trait ParticleTrait {
     fn clear_accumulator(&mut self) -> &mut Self;
     fn add_force(&mut self, f: Vec3) -> &mut Self;
     // TODO should I return links from all getters?
-    fn get_force_accum(&self) -> &Vec3;
+    fn get_force_accum(&self) -> Vec3;
 }

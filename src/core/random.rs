@@ -1,6 +1,5 @@
-use crate::core::types::Real;
 use crate::core::vector::Vec3;
-use rand::{thread_rng, Rng};
+use rand::Rng;
 
 pub fn random_vector(min: Vec3, max: Vec3) -> Vec3 {
     let mut rng = rand::thread_rng();

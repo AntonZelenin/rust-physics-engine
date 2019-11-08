@@ -1,4 +1,4 @@
-use nalgebra::{Translation3, Vector3, Point3};
+use nalgebra::{Point3, Translation3, Vector3};
 use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
 use rust_physics_engine::core::particle::Particle;
 use rust_physics_engine::core::types::Real;
@@ -14,7 +14,7 @@ pub(crate) struct Firework {
 
 impl Firework {
     pub(crate) fn new() -> Self {
-        Self {
+        Firework {
             particle: Particle::new(),
             firework_type: 0,
             age: 0.0,
@@ -29,7 +29,6 @@ impl Firework {
     }
 
     pub(crate) fn is_alive(&self) -> bool {
-        let p = self.particle.get_position();
         self.age > 0.0 && self.particle.get_position().y > -70.0
     }
 
@@ -53,7 +52,7 @@ impl Firework {
         self
     }
 
-    pub fn get_color(&self) -> Point3<Real> {
+    pub fn get_color(&self) -> Point3<f32> {
         match self.firework_type {
             1 => Point3::new(1.0, 0.0, 0.0),
             3 => Point3::new(1.0, 1.0, 0.0),
@@ -108,7 +107,7 @@ impl ParticleTrait for Firework {
         self
     }
 
-    fn get_force_accum(&self) -> &Vec3 {
+    fn get_force_accum(&self) -> Vec3 {
         self.particle.get_force_accum()
     }
 }

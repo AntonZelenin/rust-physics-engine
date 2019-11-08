@@ -19,7 +19,7 @@ impl TimingData {
         self.last_frame_time = now;
     }
 
-    pub fn get_last_frame_duration(&self) -> &Duration {
-        &self.last_frame_duration
+    pub fn get_last_frame_duration(&self) -> Duration {
+        self.last_frame_duration
     }
 }

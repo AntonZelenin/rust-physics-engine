@@ -12,10 +12,10 @@ pub struct Vec3 {
 
 impl Vec3 {
     pub fn new() -> Self {
-        Self::default()
+        Vec3::default()
     }
 
-    pub fn from_values(x: Real, y: Real, z: Real) -> Vec3 {
+    pub fn from_values(x: Real, y: Real, z: Real) -> Self {
         Vec3 {
             x,
             y,
@@ -42,9 +42,7 @@ impl Vec3 {
     }
 
     pub fn invert(&mut self) -> &mut Self {
-        self.x = -self.x;
-        self.y = -self.y;
-        self.z = -self.z;
+        *self *= -1.0;
         self
     }
 
@@ -71,7 +69,7 @@ impl Vec3 {
         self
     }
 
-    pub fn component_product(&self, v: Vec3) -> Self {
+    pub fn component_product(&self, v: Vec3) -> Vec3 {
         Vec3 {
             x: self.x * v.x,
             y: self.y * v.y,
@@ -91,7 +89,7 @@ impl Vec3 {
         self.x * v.x + self.y * v.y + self.z * v.z
     }
 
-    pub fn vector_product(&self, v: Vec3) -> Self {
+    pub fn vector_product(&self, v: Vec3) -> Vec3 {
         Vec3 {
             x: self.y * v.z - self.z * v.y,
             y: self.z * v.x - self.x * v.z,
@@ -121,6 +119,14 @@ impl Vec3 {
 }
 
 impl ops::MulAssign<Real> for Vec3 {
+    fn mul_assign(&mut self, v: Real) {
+        self.x *= v;
+        self.y *= v;
+        self.z *= v;
+    }
+}
+
+impl ops::MulAssign<Real> for &mut Vec3 {
     fn mul_assign(&mut self, v: Real) {
         self.x *= v;
         self.y *= v;

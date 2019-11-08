@@ -1,3 +1,5 @@
+pub mod force_generator;
+pub mod force_registry;
 pub mod particle_trait;
 
 use crate::core::particle::particle_trait::ParticleTrait;
@@ -85,7 +87,7 @@ impl ParticleTrait for Particle {
     }
 
     fn get_position(&self) -> Vec3 {
-        self.position.clone()
+        self.position
     }
 
     fn set_position(&mut self, p: Vec3) -> &mut Self {
@@ -94,7 +96,7 @@ impl ParticleTrait for Particle {
     }
 
     fn get_velocity(&self) -> Vec3 {
-        self.velocity.clone()
+        self.velocity
     }
 
     fn set_velocity(&mut self, v: Vec3) -> &mut Self {
@@ -103,7 +105,7 @@ impl ParticleTrait for Particle {
     }
 
     fn get_acceleration(&self) -> Vec3 {
-        self.acceleration.clone()
+        self.acceleration
     }
 
     fn get_damping(&self) -> Real {
@@ -120,7 +122,7 @@ impl ParticleTrait for Particle {
         self
     }
 
-    fn get_force_accum(&self) -> &Vec3 {
-        &self.force_accum
+    fn get_force_accum(&self) -> Vec3 {
+        self.force_accum
     }
 }

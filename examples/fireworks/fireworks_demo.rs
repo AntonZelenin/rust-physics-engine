@@ -151,11 +151,11 @@ impl FireworksDemo {
         self
     }
 
-//        fn create_multiple(&mut self, firework_type: i32, number: u32, parent: &Firework) {
-//            for _ in 0..number {
-//                self.create(firework_type, parent);
-//            }
-//        }
+    //        fn create_multiple(&mut self, firework_type: i32, number: u32, parent: &Firework) {
+    //            for _ in 0..number {
+    //                self.create(firework_type, parent);
+    //            }
+    //        }
 
     fn update_fireworks(&mut self, duration: Real) {
         self.fireworks.iter_mut().for_each(|f| {
@@ -211,7 +211,8 @@ impl App for FireworksDemo {
         for firework in &self.fireworks {
             // TODO refactor, I'm lazy now, so making it fast and dirty
             let p = firework.get_position();
-            self.window.draw_point(&Point3::new(p.x, p.y, p.z), &firework.get_color())
+            self.window
+                .draw_point(&Point3::new(p.x as f32, p.y  as f32, p.z as f32), &firework.get_color())
         }
     }
 }
