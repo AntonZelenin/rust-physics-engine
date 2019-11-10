@@ -19,7 +19,7 @@ impl Drag {
 }
 
 impl ForceGenerator for Drag {
-    fn update_force<P: ParticleTrait>(&mut self, particle: &mut P, duration: Real) {
+    fn update_force<P: ParticleTrait>(&self, particle: &mut P, duration: Real) {
         let mut force = particle.get_velocity();
         let magnitude = force.magnitude();
         let drag_coefficient = self.k1 * magnitude + self.k2 * magnitude * magnitude;
