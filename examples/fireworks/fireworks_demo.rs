@@ -211,8 +211,10 @@ impl App for FireworksDemo {
         for firework in &self.fireworks {
             // TODO refactor, I'm lazy now, so making it fast and dirty
             let p = firework.get_position();
-            self.window
-                .draw_point(&Point3::new(p.x as f32, p.y  as f32, p.z as f32), &firework.get_color())
+            self.window.draw_point(
+                &Point3::new(p.x as f32, p.y as f32, p.z as f32),
+                &firework.get_color(),
+            )
         }
     }
 }

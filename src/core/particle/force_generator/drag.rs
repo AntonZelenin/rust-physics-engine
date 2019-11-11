@@ -11,15 +11,12 @@ struct Drag {
 
 impl Drag {
     pub fn new(k1: Real, k2: Real) -> Self {
-        Self {
-            k1,
-            k2,
-        }
+        Self { k1, k2 }
     }
 }
 
 impl ForceGenerator for Drag {
-    fn update_force<P: ParticleTrait>(&self, particle: &mut P, duration: Real) {
+    fn update_force<P: ParticleTrait>(&self, particle: &mut P, _duration: Real) {
         let mut force = particle.get_velocity();
         let magnitude = force.magnitude();
         let drag_coefficient = self.k1 * magnitude + self.k2 * magnitude * magnitude;

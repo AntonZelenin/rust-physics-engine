@@ -10,7 +10,7 @@ struct Spring<'a, PT: ParticleTrait> {
 }
 
 impl<'a, PT: ParticleTrait> Spring<'a, PT> {
-    pub(crate) fn new(other: &'a PT, spring_constant: Real, rest_length: Real) -> Self {
+    pub fn new(other: &'a PT, spring_constant: Real, rest_length: Real) -> Self {
         Spring {
             other,
             spring_constant,
@@ -21,7 +21,7 @@ impl<'a, PT: ParticleTrait> Spring<'a, PT> {
 
 // TODO: strange trait bounds PT: ParticleTrait, P: ParticleTrait
 impl<'a, PT: ParticleTrait> ForceGenerator for Spring<'a, PT> {
-    fn update_force<P: ParticleTrait>(&self, particle: &mut P, duration: Real) {
+    fn update_force<P: ParticleTrait>(&self, particle: &mut P, _duration: Real) {
         // calculate the vector of the spring
         let mut force = particle.get_position() - self.other.get_position();
         // calculate the magnitude of the force
