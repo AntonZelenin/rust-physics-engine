@@ -14,7 +14,7 @@ impl Gravity {
 }
 
 impl ForceGenerator for Gravity {
-    fn update_force<P: ParticleTrait>(&self, particle: &mut P, _duration: Real) {
+    fn update_force<P: ParticleTrait>(&mut self, particle: &mut P, _duration: Real) {
         if particle.is_infinite_mass() {
             return;
         }
