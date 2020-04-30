@@ -1,3 +1,4 @@
+pub mod collision_resolver;
 pub mod force_generator;
 pub mod force_registry;
 pub mod particle_trait;

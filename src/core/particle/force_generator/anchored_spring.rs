@@ -21,7 +21,7 @@ impl<'a> AnchoredSpring<'a> {
 
 impl<'a> ForceGenerator for AnchoredSpring<'a> {
     fn update_force<P: ParticleTrait>(&mut self, particle: &mut P, _duration: Real) {
-        // calculate the vector of the spring
+        // calculate the vector of the spring_cube
         let mut force = particle.get_position() - *self.anchor;
         let magnitude = self.spring_constant * (force.magnitude() - self.rest_length).abs();
         force.normalize();

@@ -20,7 +20,7 @@ impl<'a, PT: ParticleTrait> Bangee<'a, PT> {
 
 impl<'a, PT: ParticleTrait> ForceGenerator for Bangee<'a, PT> {
     fn update_force<P: ParticleTrait>(&mut self, particle: &mut P, _duration: Real) {
-        // calculate the vector of the spring
+        // calculate the vector of the spring_cube
         let mut force = particle.get_position() - self.other.get_position();
 
         let mut magnitude = force.magnitude();

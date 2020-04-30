@@ -8,9 +8,6 @@ pub trait ParticleTrait {
     /// linear approximation to the correct integral. For this reason it
     /// mey be inaccurate in some cases
     fn integrate(&mut self, duration: Real) -> &mut Self {
-        if duration < 0.0 {
-            panic!("Time between frames cannot be less then 0");
-        }
         if self.is_infinite_mass() || duration == 0.0 {
             return self;
         }
@@ -18,8 +15,6 @@ pub trait ParticleTrait {
         let mut next_position = self.get_position();
         next_position.add_scaled(self.get_velocity(), duration);
         self.set_position(next_position);
-
-        //        println!("{:?}", self.get_position());
 
         let mut resulting_acceleration = self.get_acceleration();
         resulting_acceleration.add_scaled(self.get_force_accum(), self.get_inverse_mass());
@@ -40,7 +35,10 @@ pub trait ParticleTrait {
         1.0 / self.get_inverse_mass()
     }
 
-    fn is_infinite_mass(&self) -> bool;
+    fn is_infinite_mass(&self) -> bool {
+        self.get_inverse_mass() == 0.0
+    }
+
     fn get_inverse_mass(&self) -> Real;
     fn get_position(&self) -> Vec3;
     fn set_position(&mut self, p: Vec3) -> &mut Self;

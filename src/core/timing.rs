@@ -3,6 +3,7 @@ use std::time::{Duration, Instant};
 pub struct TimingData {
     last_frame_duration: Duration,
     last_frame_time: Instant,
+    start: Instant,
 }
 
 impl TimingData {
@@ -10,6 +11,7 @@ impl TimingData {
         Self {
             last_frame_duration: Duration::new(0, 0),
             last_frame_time: Instant::now(),
+            start: Instant::now(),
         }
     }
 
@@ -21,5 +23,9 @@ impl TimingData {
 
     pub fn get_last_frame_duration(&self) -> Duration {
         self.last_frame_duration
+    }
+
+    pub fn get_from_start(&self) -> f32 {
+        (Instant::now() - self.start).as_secs_f32()
     }
 }

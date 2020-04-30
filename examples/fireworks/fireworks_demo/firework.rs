@@ -63,10 +63,6 @@ impl Firework {
 }
 
 impl ParticleTrait for Firework {
-    fn is_infinite_mass(&self) -> bool {
-        self.particle.is_infinite_mass()
-    }
-
     fn get_inverse_mass(&self) -> Real {
         self.particle.get_inverse_mass()
     }

@@ -1,5 +1,6 @@
+#[path = "../app.rs"]
 pub mod app;
-pub mod fireworks_demo;
+mod fireworks_demo;
 
 use crate::app::App;
 use crate::fireworks_demo::FireworksDemo;

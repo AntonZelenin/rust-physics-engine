@@ -151,12 +151,6 @@ impl FireworksDemo {
         self
     }
 
-    //        fn create_multiple(&mut self, firework_type: i32, number: u32, parent: &Firework) {
-    //            for _ in 0..number {
-    //                self.create(firework_type, parent);
-    //            }
-    //        }
-
     fn update_fireworks(&mut self, duration: Real) {
         self.fireworks.iter_mut().for_each(|f| {
             f.update(duration);
@@ -194,9 +188,6 @@ impl App for FireworksDemo {
 
     fn update(&mut self, timing: &TimingData) {
         let duration = timing.get_last_frame_duration().as_secs_f64() as Real;
-        if duration <= 0.0 {
-            return;
-        }
         self.update_fireworks(duration);
         let mut child_fireworks = self.create_child_fireworks();
         self.fireworks.append(&mut child_fireworks);
@@ -209,7 +200,6 @@ impl App for FireworksDemo {
 
     fn display(&mut self) {
         for firework in &self.fireworks {
-            // TODO refactor, I'm lazy now, so making it fast and dirty
             let p = firework.get_position();
             self.window.draw_point(
                 &Point3::new(p.x as f32, p.y as f32, p.z as f32),
