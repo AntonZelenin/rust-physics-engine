@@ -29,7 +29,7 @@ pub trait ParticleTrait {
     }
 
     fn get_mass(&self) -> Real {
-        if self.get_inverse_mass() == 0.0 {
+        if self.is_infinite_mass() {
             return INFINITY as Real;
         }
         1.0 / self.get_inverse_mass()

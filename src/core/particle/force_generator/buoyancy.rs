@@ -2,7 +2,6 @@ use crate::core::particle::force_generator::ForceGenerator;
 use crate::core::particle::particle_trait::ParticleTrait;
 use crate::core::types::Real;
 use crate::core::vector::Vec3;
-use crate::core::GRAVITY;
 
 pub struct Buoyancy {
     // the maximum submersion depth of the object before it generates its maximum buoyancy force
@@ -32,6 +31,7 @@ impl Buoyancy {
 }
 
 impl ForceGenerator for Buoyancy {
+    // TODO it doesn't work correctly, if drag force is removed - particle will accelerate more and more
     fn update_force<P: ParticleTrait>(&mut self, particle: &mut P, _duration: Real) {
         // partial submersion
         let mut submersion_depth = self.water_height + self.max_depth - particle.get_position().y;
