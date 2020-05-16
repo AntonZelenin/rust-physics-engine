@@ -2,15 +2,17 @@ use crate::core::particle::particle_trait::ParticleTrait;
 use crate::core::types::Real;
 use crate::core::vector::Vec3;
 
-// TODO collision_resolution directory might be redundant
+pub trait ContactGenerator<P: ParticleTrait> {
+    fn add_contact(&mut self) -> Option<Contact<P>>;
+}
 
 pub struct Contact<'a, P: ParticleTrait> {
     // particles involved in the contact. The second of these could be null for contacts with the scenery
-    particles: (&'a mut P, Option<&'a mut P>),
+    pub particles: (&'a mut P, Option<&'a mut P>),
     // normal restitution coefficient at the contact
-    restitution: Real,
+    pub restitution: Real,
     // the direction of the contact in world coordinates from the first object’s perspective
-    contact_normal: Vec3,
+    pub contact_normal: Vec3,
     // holds the depth of penetration at the contact.
     pub penetration: Real,
 }
@@ -48,17 +50,21 @@ impl<'a, P: ParticleTrait> Contact<'a, P> {
         let total_inverse_mass = self.get_total_inverse_mass();
         let total_impulse = delta_velocity / total_inverse_mass;
         let impulse_per_mass = self.contact_normal * total_impulse;
-        self.particles.0.set_velocity(self.particles.0.get_velocity() + impulse_per_mass * self.particles.0.get_inverse_mass());
+        self.particles.0.set_velocity(
+            self.particles.0.get_velocity()
+                + impulse_per_mass * self.particles.0.get_inverse_mass(),
+        );
         if let Some(p) = &mut self.particles.1 {
             p.set_velocity(p.get_velocity() + impulse_per_mass * p.get_inverse_mass());
         };
     }
 
     pub fn calculate_separating_velocity(&self) -> Real {
-        let relative_velocity = self.particles.0.get_velocity() - match &self.particles.1 {
-            Some(p) => p.get_velocity(),
-            None => Vec3::new(),
-        };
+        let relative_velocity = self.particles.0.get_velocity()
+            - match &self.particles.1 {
+                Some(p) => p.get_velocity(),
+                None => Vec3::new(),
+            };
         relative_velocity * self.contact_normal
     }
 
@@ -72,21 +78,18 @@ impl<'a, P: ParticleTrait> Contact<'a, P> {
         let move_per_mass = self.contact_normal * (self.penetration / total_inverse_mass);
         // TODO implement append position. Do I need it in trait?
         self.particles.0.set_position(
-            self.particles.0.get_position() + move_per_mass * self.particles.0.get_inverse_mass()
+            self.particles.0.get_position() + move_per_mass * self.particles.0.get_inverse_mass(),
         );
         if let Some(p) = &mut self.particles.1 {
-            p.set_position(
-                p.get_position() - move_per_mass * p.get_inverse_mass()
-            );
+            p.set_position(p.get_position() - move_per_mass * p.get_inverse_mass());
         }
     }
 
     fn get_total_inverse_mass(&self) -> Real {
-        self.particles.0.get_inverse_mass() +
-        match & self.particles.1 {
-            Some(p) => p.get_inverse_mass(),
-            None => 0.0,
-        }
+        self.particles.0.get_inverse_mass()
+            + match &self.particles.1 {
+                Some(p) => p.get_inverse_mass(),
+                None => 0.0,
+            }
     }
-
 }

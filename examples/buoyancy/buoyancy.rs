@@ -3,13 +3,13 @@ use kiss3d::light::Light;
 use kiss3d::window::Window;
 use nalgebra::Point3;
 use rust_physics_engine::core::particle::force_generator::buoyancy::Buoyancy;
+use rust_physics_engine::core::particle::force_generator::gravity::Gravity;
 use rust_physics_engine::core::particle::force_generator::ForceGenerator;
 use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
 use rust_physics_engine::core::particle::Particle;
 use rust_physics_engine::core::timing::TimingData;
 use rust_physics_engine::core::types::Real;
 use rust_physics_engine::core::vector::Vec3;
-use rust_physics_engine::core::particle::force_generator::gravity::Gravity;
 use rust_physics_engine::core::GRAVITY;
 use std::fs::{File, OpenOptions};
 use std::io::prelude::*;
@@ -19,7 +19,7 @@ pub struct BuoyancyDemo {
     particle: Particle,
     buoyancy_fg: Buoyancy,
     gravity_fg: Gravity,
-    log: File
+    log: File,
 }
 
 impl BuoyancyDemo {
@@ -27,7 +27,9 @@ impl BuoyancyDemo {
         let mut window = Window::new_with_size("Cyclone > Spring demo", 1024, 1024);
         window.set_light(Light::Absolute(Point3::new(0.0, 0.0, -10.0)));
         let mut particle = Particle::new();
-        particle.set_position(Vec3::from_values(0.0, 0.0, 15.0)).set_damping(1.0);
+        particle
+            .set_position(Vec3::from_values(0.0, 0.0, 15.0))
+            .set_damping(1.0);
         BuoyancyDemo {
             window,
             particle,
@@ -38,7 +40,7 @@ impl BuoyancyDemo {
                 .append(true)
                 .create(true)
                 .open("/tmp/rust.log")
-                .unwrap()
+                .unwrap(),
         }
     }
 }
