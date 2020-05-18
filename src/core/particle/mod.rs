@@ -2,6 +2,7 @@ pub mod collision;
 pub mod force_generator;
 pub mod force_registry;
 pub mod particle_trait;
+pub mod world;
 
 use crate::core::particle::particle_trait::ParticleTrait;
 use crate::core::types::Real;

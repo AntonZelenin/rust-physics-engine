@@ -2,8 +2,8 @@ use crate::core::particle::particle_trait::ParticleTrait;
 use crate::core::types::Real;
 use crate::core::vector::Vec3;
 
-pub trait ContactGenerator<P: ParticleTrait> {
-    fn add_contact(&mut self) -> Option<Contact<P>>;
+pub trait ContactGenerator<'a, P: ParticleTrait> {
+    fn add_contact(&'a mut self) -> Option<Contact<'a, P>>;
 }
 
 pub struct Contact<'a, P: ParticleTrait> {
@@ -20,7 +20,7 @@ pub struct Contact<'a, P: ParticleTrait> {
 impl<'a, P: ParticleTrait> Contact<'a, P> {
     pub fn resolve(&mut self, duration: Real) {
         self.resolve_velocity(duration);
-        self.resolve_interpenetration(duration);
+        self.resolve_interpenetration();
     }
 
     fn resolve_velocity(&mut self, duration: Real) {
@@ -70,7 +70,7 @@ impl<'a, P: ParticleTrait> Contact<'a, P> {
 
     /// When two objects are interpenetrating, we need to move them back
     /// in proportion to their masses
-    fn resolve_interpenetration(&mut self, duration: Real) {
+    fn resolve_interpenetration(&mut self) {
         if self.penetration <= 0.0 {
             return;
         }
