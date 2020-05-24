@@ -1,17 +1,17 @@
+use crate::core::particle::collision::contact::{Contact, ContactGenerator};
 use crate::core::particle::collision::contact_resolver::ContactResolver;
-use crate::core::particle::collision::contact::{ContactGenerator, Contact};
+use crate::core::particle::force_generator::ForceGenerator;
 use crate::core::particle::force_registry::ForceRegistry;
 use crate::core::particle::particle_trait::ParticleTrait;
-use crate::core::particle::force_generator::ForceGenerator;
-use std::marker::PhantomData;
 use crate::core::types::Real;
+use std::marker::PhantomData;
 
 struct World<'a, P, C, FR, FG>
 where
     P: ParticleTrait,
     C: ContactGenerator<'a, P>,
     FR: ForceRegistry<P, FG>,
-    FG: ForceGenerator
+    FG: ForceGenerator,
 {
     particles: Vec<P>,
     force_registry: FR,
@@ -28,13 +28,14 @@ where
     P: ParticleTrait,
     C: ContactGenerator<'a, P>,
     FR: ForceRegistry<P, FG>,
-    FG: ForceGenerator
+    FG: ForceGenerator,
 {
     pub fn run_physics(&'a mut self, duration: Real) {
         self.force_registry.update_forces(duration);
         self.integrate(duration);
         if self.calculate_iterations {
-            self.contact_resolver.set_iterations((self.contacts.len() * 2) as u32);
+            self.contact_resolver
+                .set_iterations((self.contacts.len() * 2) as u32);
         }
         let mut contacts = Vec::with_capacity(0);
         for cg in self.contact_generators.iter_mut() {

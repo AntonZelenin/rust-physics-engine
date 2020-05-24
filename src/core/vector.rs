@@ -147,19 +147,6 @@ impl ops::Mul<Real> for Vec3 {
     }
 }
 
-impl ops::Mul<Real> for &mut Vec3 {
-    type Output = Vec3;
-
-    fn mul(self, v: Real) -> Self::Output {
-        Vec3 {
-            x: self.x * v,
-            y: self.y * v,
-            z: self.z * v,
-            ..Default::default()
-        }
-    }
-}
-
 impl ops::AddAssign for Vec3 {
     fn add_assign(&mut self, v: Vec3) {
         self.x += v.x;
