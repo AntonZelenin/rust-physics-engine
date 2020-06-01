@@ -25,6 +25,6 @@ impl<'a> ForceGenerator for AnchoredSpring<'a> {
         let mut force = particle.get_position() - *self.anchor;
         let magnitude = self.spring_constant * (force.magnitude() - self.rest_length).abs();
         force.normalize();
-        particle.add_force(force * -magnitude);
+        particle.add_force(&force * -magnitude);
     }
 }

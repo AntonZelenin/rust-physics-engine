@@ -47,6 +47,6 @@ impl<'a, PT: ParticleTrait> ForceGenerator for DeformableSpring<'a, PT> {
             (self.spring_constant / divider) * (force.magnitude() - self.rest_length).abs();
         // calculate the final force and apply it
         force.normalize();
-        particle.add_force(force * -magnitude);
+        particle.add_force(&force * -magnitude);
     }
 }

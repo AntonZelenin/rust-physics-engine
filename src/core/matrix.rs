@@ -114,6 +114,33 @@ impl Matrix4 {
         self * v
     }
 
+    // Transform the given vector by the transformational inverse
+    // of this matrix.
+    pub fn transform_inverse(&self, mut v: Vec3) -> Vec3 {
+        v.x -= self.data[3];
+        v.y -= self.data[7];
+        v.z -= self.data[11];
+        self.transform_inverse_direction(v)
+    }
+
+    pub fn transform_direction(&self, v: Vec3) -> Vec3 {
+        Vec3 {
+            x: v.x * self.data[0] + v.y * self.data[1] + v.z * self.data[2],
+            y: v.x * self.data[4] + v.y * self.data[5] + v.z * self.data[6],
+            z: v.x * self.data[8] + v.y * self.data[9] + v.z * self.data[10],
+            ..Default::default()
+        }
+    }
+
+    pub fn transform_inverse_direction(&self, v: Vec3) -> Vec3 {
+        Vec3 {
+            x: v.x * self.data[0] + v.y * self.data[4] + v.z * self.data[8],
+            y: v.x * self.data[1] + v.y * self.data[5] + v.z * self.data[9],
+            z: v.x * self.data[2] + v.y * self.data[6] + v.z * self.data[10],
+            ..Default::default()
+        }
+    }
+
     pub fn invert(&mut self) {
         if let Some(m) = self.get_inverse() {
             *self = m;

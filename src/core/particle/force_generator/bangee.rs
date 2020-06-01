@@ -31,6 +31,6 @@ impl<'a, PT: ParticleTrait> ForceGenerator for Bangee<'a, PT> {
         magnitude = self.spring_constant * (magnitude - self.rest_length).abs();
         // calculate the final force and apply it
         force.normalize();
-        particle.add_force(force * -magnitude);
+        particle.add_force(&force * -magnitude);
     }
 }

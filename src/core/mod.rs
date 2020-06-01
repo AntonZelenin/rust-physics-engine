@@ -2,6 +2,7 @@ use crate::core::vector::Vec3;
 
 pub mod matrix;
 pub mod particle;
+pub mod quaternion;
 pub mod random;
 pub mod timing;
 pub mod types;

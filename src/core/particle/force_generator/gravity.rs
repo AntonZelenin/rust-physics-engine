@@ -18,6 +18,6 @@ impl ForceGenerator for Gravity {
         if particle.is_infinite_mass() {
             return;
         }
-        particle.add_force(self.gravity * particle.get_mass());
+        particle.add_force(&self.gravity * particle.get_mass());
     }
 }

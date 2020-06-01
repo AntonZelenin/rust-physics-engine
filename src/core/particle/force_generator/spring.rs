@@ -24,6 +24,6 @@ impl<'a, PT: ParticleTrait> ForceGenerator for Spring<'a, PT> {
         let mut force = particle.get_position() - self.other.get_position();
         let magnitude = self.spring_constant * (force.magnitude() - self.rest_length).abs();
         force.normalize();
-        particle.add_force(force * -magnitude);
+        particle.add_force(&force * -magnitude);
     }
 }

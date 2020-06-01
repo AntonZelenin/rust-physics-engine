@@ -1,3 +1,4 @@
+use crate::core::matrix::Matrix4;
 use crate::core::types::Real;
 use std::ops;
 
@@ -116,6 +117,25 @@ impl Vec3 {
         self.z = 0.0;
         self
     }
+
+    pub fn local_to_world(&self, transform: Matrix4) -> Vec3 {
+        transform.transform(self.clone())
+    }
+
+    pub fn world_to_local(&self, transform: Matrix4) -> Vec3 {
+        transform.transform_inverse(self.clone())
+    }
+
+    // Transforms local direction vector to world direction vector
+    // TODO refactor?
+    pub fn local_to_world_dir(&self, transform: Matrix4) -> Vec3 {
+        transform.transform_direction(self.clone())
+    }
+
+    // Transforms world direction vector to local direction vector
+    pub fn world_to_local_dir(&self, transform: Matrix4) -> Vec3 {
+        transform.transform_inverse_direction(self.clone())
+    }
 }
 
 impl ops::MulAssign<Real> for Vec3 {
@@ -134,7 +154,7 @@ impl ops::MulAssign<Real> for &mut Vec3 {
     }
 }
 
-impl ops::Mul<Real> for Vec3 {
+impl ops::Mul<Real> for &Vec3 {
     type Output = Vec3;
 
     fn mul(self, v: Real) -> Self::Output {
@@ -189,10 +209,10 @@ impl ops::Sub for Vec3 {
     }
 }
 
-impl ops::Mul for Vec3 {
+impl ops::Mul for &Vec3 {
     type Output = Real;
 
-    fn mul(self, v: Vec3) -> Self::Output {
+    fn mul(self, v: &Vec3) -> Self::Output {
         self.x * v.x + self.y * v.y + self.z * v.z
     }
 }
