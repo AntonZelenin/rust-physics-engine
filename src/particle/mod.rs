@@ -4,9 +4,9 @@ pub mod force_registry;
 pub mod particle_trait;
 pub mod world;
 
-use crate::core::particle::particle_trait::ParticleTrait;
-use crate::core::types::Real;
-use crate::core::vector::Vec3;
+use crate::particle::particle_trait::ParticleTrait;
+use crate::types::Real;
+use crate::vector::Vec3;
 
 #[derive(Copy, Clone)]
 pub struct Particle {

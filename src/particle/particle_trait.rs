@@ -1,5 +1,5 @@
-use crate::core::types::Real;
-use crate::core::vector::Vec3;
+use crate::types::Real;
+use crate::vector::Vec3;
 use std::f64::INFINITY;
 
 pub trait ParticleTrait {

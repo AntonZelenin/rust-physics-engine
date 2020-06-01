@@ -1,5 +1,5 @@
-use crate::core::matrix::Matrix4;
-use crate::core::types::Real;
+use crate::matrix::Matrix4;
+use crate::types::Real;
 use std::ops;
 
 #[derive(Default, Debug, Copy, Clone)]

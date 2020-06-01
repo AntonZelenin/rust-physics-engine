@@ -1,7 +1,7 @@
-use crate::core::types::Real;
-use crate::core::vector::Vec3;
+use crate::types::Real;
+use crate::vector::Vec3;
 use std::ops;
-use crate::core::quaternion::Quaternion;
+use crate::quaternion::Quaternion;
 
 /**
 * Holds a 3 x 3 row major matrix representing a transformation in

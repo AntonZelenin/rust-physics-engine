@@ -1,6 +1,6 @@
-use crate::core::particle::collision::contact::{Contact, ContactGenerator};
-use crate::core::particle::particle_trait::ParticleTrait;
-use crate::core::types::Real;
+use crate::particle::collision::contact::{Contact, ContactGenerator};
+use crate::particle::particle_trait::ParticleTrait;
+use crate::types::Real;
 
 /**
 * Links connect two particles together, generating a contact if

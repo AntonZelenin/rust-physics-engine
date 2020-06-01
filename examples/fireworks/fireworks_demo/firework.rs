@@ -1,8 +1,8 @@
 use nalgebra::{Point3, Translation3, Vector3};
-use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
-use rust_physics_engine::core::particle::Particle;
-use rust_physics_engine::core::types::Real;
-use rust_physics_engine::core::vector::Vec3;
+use rust_physics_engine::particle::particle_trait::ParticleTrait;
+use rust_physics_engine::particle::Particle;
+use rust_physics_engine::types::Real;
+use rust_physics_engine::vector::Vec3;
 use std::borrow::BorrowMut;
 
 #[derive(Clone)]

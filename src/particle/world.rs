@@ -1,9 +1,9 @@
-use crate::core::particle::collision::contact::{Contact, ContactGenerator};
-use crate::core::particle::collision::contact_resolver::ContactResolver;
-use crate::core::particle::force_generator::ForceGenerator;
-use crate::core::particle::force_registry::ForceRegistry;
-use crate::core::particle::particle_trait::ParticleTrait;
-use crate::core::types::Real;
+use crate::particle::collision::contact::{Contact, ContactGenerator};
+use crate::particle::collision::contact_resolver::ContactResolver;
+use crate::particle::force_generator::ForceGenerator;
+use crate::particle::force_registry::ForceRegistry;
+use crate::particle::particle_trait::ParticleTrait;
+use crate::types::Real;
 use std::marker::PhantomData;
 
 struct World<'a, P, C, FR, FG>

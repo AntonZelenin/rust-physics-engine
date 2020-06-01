@@ -1,7 +1,7 @@
-use crate::core::particle::force_generator::ForceGenerator;
-use crate::core::particle::particle_trait::ParticleTrait;
-use crate::core::types::Real;
-use crate::core::vector::Vec3;
+use crate::particle::force_generator::ForceGenerator;
+use crate::particle::particle_trait::ParticleTrait;
+use crate::types::Real;
+use crate::vector::Vec3;
 
 pub struct AirBuoyancy {
     sea_level_height: Real,

@@ -1,8 +1,8 @@
 extern crate ordered_float;
 
-use crate::core::particle::collision::contact::Contact;
-use crate::core::particle::particle_trait::ParticleTrait;
-use crate::core::types::Real;
+use crate::particle::collision::contact::Contact;
+use crate::particle::particle_trait::ParticleTrait;
+use crate::types::Real;
 use ordered_float::OrderedFloat;
 
 pub struct ContactResolver {

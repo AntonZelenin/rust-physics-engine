@@ -1,5 +1,5 @@
 use kiss3d::window::Window;
-use rust_physics_engine::core::timing::TimingData;
+use rust_physics_engine::timing::TimingData;
 
 pub trait App {
     fn run(&mut self) {

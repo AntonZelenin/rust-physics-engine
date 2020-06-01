@@ -1,4 +1,4 @@
-use crate::core::vector::Vec3;
+use crate::vector::Vec3;
 use rand::Rng;
 
 pub fn random_vector(min: Vec3, max: Vec3) -> Vec3 {

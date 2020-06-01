@@ -1,6 +1,6 @@
-use crate::core::types::Real;
+use crate::types::Real;
 use std::ops;
-use crate::core::vector::Vec3;
+use crate::vector::Vec3;
 
 pub struct Quaternion {
     pub r: Real,

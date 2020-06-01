@@ -1,7 +1,7 @@
-use crate::core::types::Real;
-use crate::core::vector::Vec3;
-use crate::core::matrix::Matrix4;
-use crate::core::quaternion::Quaternion;
+use crate::types::Real;
+use crate::vector::Vec3;
+use crate::matrix::Matrix4;
+use crate::quaternion::Quaternion;
 
 pub struct RigidBody {
     inverse_mass: Real,

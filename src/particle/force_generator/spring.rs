@@ -1,6 +1,6 @@
-use crate::core::particle::force_generator::ForceGenerator;
-use crate::core::particle::particle_trait::ParticleTrait;
-use crate::core::types::Real;
+use crate::particle::force_generator::ForceGenerator;
+use crate::particle::particle_trait::ParticleTrait;
+use crate::types::Real;
 
 struct Spring<'a, PT: ParticleTrait> {
     other: &'a PT,

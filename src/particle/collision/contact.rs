@@ -1,6 +1,6 @@
-use crate::core::particle::particle_trait::ParticleTrait;
-use crate::core::types::Real;
-use crate::core::vector::Vec3;
+use crate::particle::particle_trait::ParticleTrait;
+use crate::types::Real;
+use crate::vector::Vec3;
 
 pub trait ContactGenerator<'a, P: ParticleTrait> {
     fn add_contact(&'a mut self) -> Option<Contact<'a, P>>;

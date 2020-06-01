@@ -9,10 +9,10 @@ use crate::fireworks_demo::payload::Payload;
 use kiss3d::light::Light;
 use kiss3d::window::Window;
 use nalgebra::{Point3, Translation3, Vector3};
-use rust_physics_engine::core::particle::particle_trait::ParticleTrait;
-use rust_physics_engine::core::timing::TimingData;
-use rust_physics_engine::core::types::Real;
-use rust_physics_engine::core::vector::Vec3;
+use rust_physics_engine::particle::particle_trait::ParticleTrait;
+use rust_physics_engine::timing::TimingData;
+use rust_physics_engine::types::Real;
+use rust_physics_engine::vector::Vec3;
 use std::borrow::BorrowMut;
 
 pub struct FireworksDemo {
