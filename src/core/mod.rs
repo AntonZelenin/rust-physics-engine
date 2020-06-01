@@ -4,6 +4,7 @@ pub mod matrix;
 pub mod particle;
 pub mod quaternion;
 pub mod random;
+pub mod rigid_body;
 pub mod timing;
 pub mod types;
 pub mod vector;

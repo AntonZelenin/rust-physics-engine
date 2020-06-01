@@ -1,6 +1,7 @@
 use crate::core::types::Real;
 use crate::core::vector::Vec3;
 use std::ops;
+use crate::core::quaternion::Quaternion;
 
 /**
 * Holds a 3 x 3 row major matrix representing a transformation in
@@ -20,13 +21,6 @@ pub struct Matrix3 {
 */
 pub struct Matrix4 {
     data: [Real; 12],
-}
-
-pub struct Quaternion {
-    r: Real,
-    i: Real,
-    j: Real,
-    k: Real,
 }
 
 impl Matrix3 {

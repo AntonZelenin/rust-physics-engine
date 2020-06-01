@@ -3,10 +3,10 @@ use std::ops;
 use crate::core::vector::Vec3;
 
 pub struct Quaternion {
-    r: Real,
-    i: Real,
-    j: Real,
-    k: Real,
+    pub r: Real,
+    pub i: Real,
+    pub j: Real,
+    pub k: Real,
     data: [Real; 4],
 }
 
