@@ -1,6 +1,6 @@
 use crate::types::Real;
-use std::ops;
 use crate::vector::Vec3;
+use std::ops;
 
 pub struct Quaternion {
     pub r: Real,
@@ -39,18 +39,18 @@ impl Quaternion {
             i: v.x,
             j: v.y,
             k: v.z,
-            data: [0.0; 4]
+            data: [0.0; 4],
         };
         *self *= &q
     }
 
-    pub fn add_scaled_vector(&mut self, v: Vec3, scale: Real) {
+    pub fn add_scaled_vector(&mut self, v: &Vec3, scale: Real) {
         let mut q = Quaternion {
             r: 0.0,
             i: v.x * scale,
             j: v.y * scale,
             k: v.z * scale,
-            data: [0.0; 4]
+            data: [0.0; 4],
         };
         q *= self;
         self.r = q.r * 0.5;

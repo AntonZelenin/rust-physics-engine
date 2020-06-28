@@ -1,7 +1,10 @@
+use crate::quaternion::Quaternion;
 use crate::types::Real;
 use crate::vector::Vec3;
 use std::ops;
-use crate::quaternion::Quaternion;
+
+const MATRIX_3_SIZE: usize = 9;
+const MATRIX_4_SIZE: usize = 12;
 
 /**
 * Holds a 3 x 3 row major matrix representing a transformation in
@@ -9,7 +12,7 @@ use crate::quaternion::Quaternion;
 * matrix is not padded to produce an aligned structure.
 */
 pub struct Matrix3 {
-    data: [Real; 9],
+    pub data: [Real; MATRIX_3_SIZE],
 }
 
 /**
@@ -20,11 +23,17 @@ pub struct Matrix3 {
 * remaining four are (0,0,0,1), producing a homogeneous matrix.
 */
 pub struct Matrix4 {
-    data: [Real; 12],
+    pub data: [Real; MATRIX_4_SIZE],
 }
 
 impl Matrix3 {
-    pub fn transform(&self, v: Vec3) -> Vec3 {
+    pub fn new() -> Self {
+        Matrix3 {
+            data: [0.0; MATRIX_3_SIZE],
+        }
+    }
+
+    pub fn transform(&self, v: &Vec3) -> Vec3 {
         self * v
     }
 
@@ -36,7 +45,7 @@ impl Matrix3 {
     }
 
     pub fn get_inverse(&self) -> Option<Matrix3> {
-        let mut result = Matrix3 { data: [0.0; 9] };
+        let mut result = Matrix3::new();
         let det = self.get_determinant();
         if det == 0.0 {
             return None;
@@ -74,7 +83,7 @@ impl Matrix3 {
     }
 
     pub fn get_transpose(&self) -> Matrix3 {
-        let mut result = Matrix3 { data: [0.0; 9] };
+        let mut result = Matrix3::new();
         result.data[0] = self.data[0];
         result.data[1] = self.data[3];
         result.data[2] = self.data[6];
@@ -104,7 +113,13 @@ impl Matrix3 {
 }
 
 impl Matrix4 {
-    pub fn transform(&self, v: Vec3) -> Vec3 {
+    pub fn new() -> Self {
+        Matrix4 {
+            data: [0.0; MATRIX_4_SIZE],
+        }
+    }
+
+    pub fn transform(&self, v: &Vec3) -> Vec3 {
         self * v
     }
 
@@ -147,7 +162,7 @@ impl Matrix4 {
         if det == 0.0 {
             return None;
         }
-        let mut result = Matrix4 { data: [0.0; 12] };
+        let mut result = Matrix4::new();
         let invd = 1.0 / det;
         result.data[0] = (-self.data[9] * self.data[6] + self.data[5] * self.data[10]) * invd;
         result.data[4] = (self.data[8] * self.data[6] - self.data[4] * self.data[10]) * invd;
@@ -208,11 +223,11 @@ impl Matrix4 {
     }
 }
 
-impl ops::Mul<Vec3> for &Matrix3 {
+impl ops::Mul<&Vec3> for &Matrix3 {
     type Output = Vec3;
 
     // TODO should I own values here and in Vec3 or use references?
-    fn mul(self, v: Vec3) -> Self::Output {
+    fn mul(self, v: &Vec3) -> Self::Output {
         Vec3 {
             x: v.x * self.data[0] + v.y * self.data[1] + v.z * self.data[2],
             y: v.x * self.data[3] + v.y * self.data[4] + v.z * self.data[5],
@@ -242,10 +257,10 @@ impl ops::Mul<Matrix3> for &Matrix3 {
     }
 }
 
-impl ops::Mul<Vec3> for &Matrix4 {
+impl ops::Mul<&Vec3> for &Matrix4 {
     type Output = Vec3;
 
-    fn mul(self, v: Vec3) -> Self::Output {
+    fn mul(self, v: &Vec3) -> Self::Output {
         Vec3 {
             x: v.x * self.data[0] + v.y * self.data[1] + v.z * self.data[2] + self.data[3],
             y: v.x * self.data[4] + v.y * self.data[5] + v.z * self.data[6] + self.data[7],
@@ -292,7 +307,7 @@ impl ops::Mul<Matrix4> for &Matrix4 {
 
     // Multiply two 3x4 matrices as if they're 4x4 with the last row 0 0 0 1
     fn mul(self, m: Matrix4) -> Self::Output {
-        let mut result = Matrix4 { data: [0.0; 12] };
+        let mut result = Matrix4::new();
 
         result.data[0] =
             m.data[0] * self.data[0] + m.data[4] * self.data[1] + m.data[8] * self.data[2];

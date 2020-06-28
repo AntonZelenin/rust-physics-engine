@@ -63,7 +63,7 @@ impl Vec3 {
         self
     }
 
-    pub fn add_scaled(&mut self, v: Vec3, scale: Real) -> &mut Self {
+    pub fn add_scaled(&mut self, v: &Vec3, scale: Real) -> &mut Self {
         self.x += v.x * scale;
         self.y += v.y * scale;
         self.z += v.z * scale;
@@ -119,7 +119,7 @@ impl Vec3 {
     }
 
     pub fn local_to_world(&self, transform: Matrix4) -> Vec3 {
-        transform.transform(self.clone())
+        transform.transform(&self)
     }
 
     pub fn world_to_local(&self, transform: Matrix4) -> Vec3 {
