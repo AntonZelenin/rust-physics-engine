@@ -8,7 +8,7 @@ edition = "2018"
 
 [dependencies]
 rand = "0.7.3"
-ordered-float = "1.0.2"
+ordered-float = "2.0.1"
 
 [dev-dependencies]
 kiss3d = "0.24.1"
